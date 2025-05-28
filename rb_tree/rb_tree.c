@@ -293,3 +293,68 @@ void print_in_order(rb_tree root) {
         print_in_order(root->right);
     }
 }
+
+void print_tree(rb_tree root, int space) {
+    if (root == NULL)
+        return;
+
+    // Aumenta distância entre níveis
+    space += 5;
+
+    // Primeiro imprime a subárvore direita
+    print_tree(root->right, space);
+
+    // Imprime o nó atual
+    printf("\n");
+    for (int i = 5; i < space; i++)
+        printf(" ");
+    printf("%d(%s)\n", root->data, root->color == RED ? "R" : "B");
+
+    // Agora imprime a subárvore esquerda
+    print_tree(root->left, space);
+}
+
+
+void export_dot_node(FILE *file, rb_tree node) {
+    if (node == NULL) return;
+
+    fprintf(file, "    %d [label=\"%d\", color=%s, fontcolor=%s];\n",
+            node->data,
+            node->data,
+            node->color == RED ? "red" : "black",
+            node->color == RED ? "red" : "black");
+
+    if (node->left) {
+        fprintf(file, "    %d -> %d;\n", node->data, node->left->data);
+        export_dot_node(file, node->left);
+    } else {
+        static int nullcount = 0;
+        fprintf(file, "    null%d [shape=point];\n", nullcount);
+        fprintf(file, "    %d -> null%d;\n", node->data, nullcount++);
+    }
+
+    if (node->right) {
+        fprintf(file, "    %d -> %d;\n", node->data, node->right->data);
+        export_dot_node(file, node->right);
+    } else {
+        static int nullcount = 0;
+        fprintf(file, "    null%d [shape=point];\n", nullcount);
+        fprintf(file, "    %d -> null%d;\n", node->data, nullcount++);
+    }
+}
+
+void export_dot(rb_tree root, const char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (!file) {
+        perror("Erro ao abrir arquivo");
+        return;
+    }
+
+    fprintf(file, "digraph RBTree {\n");
+    fprintf(file, "    node [style=filled, fontname=\"Arial\"];\n");
+
+    export_dot_node(file, root);
+
+    fprintf(file, "}\n");
+    fclose(file);
+}
