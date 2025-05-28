@@ -16,6 +16,8 @@ int main() {
 
     printf("Árvore em ordem:\n");
     print_in_order(root);
+    print_tree(root, 0);
+    export_dot(root, "arvore1.dot");
 
     printf("\nRemovendo 15 e 10...\n");
     remove_tree(&root, 15);
@@ -23,6 +25,10 @@ int main() {
 
     printf("Árvore após remoções:\n");
     print_in_order(root);
+    print_tree(root, 0);
+    export_dot(root, "arvore2.dot");
+
+
 
     return 0;
 }
