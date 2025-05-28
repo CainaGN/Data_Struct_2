@@ -15,14 +15,7 @@ struct Node *remove_smaller(struct Node *H);
 struct Node *search_smallest(struct Node *current);
 int search_tree(rb_tree *root, int value);
 void print_in_order(rb_tree root);
-/*
-rb_tree *create_tree();
-void free_tree(rb_tree *root);
-int insert_tree(rb_tree *root, int value);
-int remove_tree(rb_tree *root, int value);
-int is_empty(rb_tree *root);
-int total_node(rb_tree *root);
-int height_tree(rb_tree *root);
-int search_tree(rb_tree *root, int value);
 
-void print_in_order(rb_tree root);*/
+void print_tree(rb_tree root, int space);
+void export_dot_node(FILE *file, rb_tree node);
+void export_dot(rb_tree root, const char *filename);
